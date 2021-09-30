@@ -1,16 +1,352 @@
 import os
 
+def main():
+
+    file_name   = 'ptp-1841-211W-siae-2g'
+    radio_type  = 'ALFO80HD'               #Options:ALFO80HDX,ALFO80HD,ALFOPLUS2
+    ip_address  = '10.12.229.107'
+    default_gw  = '10.12.229.105'
+    subnet_mask = '255.255.255.248'
+    dirName     = 'Siae Configs'
+    freq        = '75750000'
+    mgmt_vlan   = '50'                     #For ALFO80HD Radios
+    
+    #Freq Table for Siae Alfo80HDX radios with Duplex Freq of 10000 MHz - Low radios similar but in the 70's instead of 80's
+    #82000000, 82062500, 82125000, 82187500, 82250000, 82312500, 82375000, 82437500
+    #82500000, 82562500, 82625000, 82687500, 82750000, 82812500, 82875000, 82937500
+    #83000000, 83062500, 83125000, 83187500, 83250000, 83312500, 83375000, 83437500
+    #83500000, 83562500, 83625000, 83687500, 83750000, 83812500, 83875000, 83937500
+    #84000000, 84062500, 84125000, 84187500, 84250000, 84312500, 84375000, 84437500
+    #84500000, 84562500, 84625000, 84687500, 84750000, 84812500, 84875000, 84937500
+    #85000000
+
+    #Freq Table for Siae Alfo80HD radios with Duplex Freq of 10000 MHz - Low radios similar but in the 70's instead of 80's
+    #81250000, 81375000, 81500000, 81625000, 81750000, 81875000, 82000000
+    #82125000, 82250000, 82375000, 82500000, 82625000, 82750000, 82875000
+    #83000000, 83125000, 83250000, 83375000, 83500000, 83625000, 83750000
+    #83875000, 84000000, 84125000, 84250000, 83750000, 84500000, 84625000
+    #84750000, 84875000, 85000000, 85125000, 85250000, 85375000, 85500000
+    #85625000, 85750000
+
+    # Specify the directory path
+    dir_path = os.path.join(os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop'), dirName)
+    print(dir_path)
+
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+
+    file_path = os.path.join(dir_path, file_name) + '.txt'
+
+    hex_name = ":".join("{:02x}".format(ord(c)) for c in file_name)
+    
+    if radio_type == 'ALFO80HDX':
+        Alfo80HDX(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,freq)
+    elif radio_type == 'ALFO80HD':
+        Alfo80HD(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,freq,mgmt_vlan)
+    elif radio_type == 'ALFOPLUS2':
+        AlfoPlus2(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,freq)
+
+
+def AlfoPlus2(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,freq):
+    pass
+
+
+def Alfo80HD(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,freq,mgmt_vlan):
+    with open(file_path, 'w') as fp:
+        fp.write('#################################\n')
+        fp.write('######ALFO80HD PORT INFO#######\n')
+        fp.write('#################################\n')
+        fp.write('#<LAN1>  = gigabitethernet 0/10\n')
+        fp.write('#<LAN2>  = gigabitethernet 0/6\n')
+        fp.write('#<RADIO> = gigabitethernet 0/1\n')
+        fp.write('#<AUX>   = gigabitethernet 0/2\n')
+        fp.write('#<MNGT>  = gigabitethernet 0/9\n')
+        fp.write('\n')
+        fp.write('#################################\n')
+        fp.write('####Equipment factory default####\n')
+        fp.write('#################################\n')
+        fp.write('\n')
+        fp.write('admin\n')
+        fp.write('admin\n')
+        fp.write('\n')
+        fp.write('## This will cause an equipment restart\n')
+        fp.write('configure terminal\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.1.16.0 value 126\n')
+        fp.write('exit\n')
+        fp.write('sleep 30\n')
+        fp.write('reload\n')
+        fp.write('\n')
+        fp.write('##########################################################################################################\n')
+        fp.write('# Wait roughly 4 mins, confirm you have GUI access, disconnect your serial connection and connect it again\n')
+        fp.write('##########################################################################################################\n')
+        fp.write('\n')
+        fp.write('admin\n')
+        fp.write('admin\n')
+        fp.write('\n')
+        fp.write('configure terminal\n')
+        fp.write('\n')
+        fp.write('#Name of radio link (Note: Name needs to be converted to Hexadecimal. In this case, name being used is: ptp-670W-727M-siae-2g)\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.1.10.0 value ' + hex_name + '\n')
+        fp.write('\n')
+        fp.write('#Enable AUX Port\n')
+        fp.write('interface gigabitethernet 0/2\n')
+        fp.write('no shutdown\n')
+        fp.write('exit\n')
+        fp.write('\n')
+        fp.write('#Enable LAN 1 Port\n')
+        fp.write('interface gigabitethernet 0/10\n')
+        fp.write('no shutdown\n')
+        fp.write('exit\n')
+        fp.write('\n')
+        fp.write('#Enable LAN 2 Port\n')
+        fp.write('interface gigabitethernet 0/6\n')
+        fp.write('no shutdown\n')
+        fp.write('exit\n')
+        fp.write('\n')
+        fp.write('#Enable RADIO Port\n')
+        fp.write('interface gigabitethernet 0/1\n')
+        fp.write('no shutdown\n')
+        fp.write('exit\n')
+        fp.write('\n')
+        fp.write('##################\n')
+        fp.write('####MNGT PLANE####\n')
+        fp.write('##################\n')
+        fp.write('#MNGT InBand IP/VLAN ROUTING CONFIGURATION\n')
+        fp.write('#Configure IP Address, Default Gateway, SNMP agent, Change Management VLAN\n')
+        fp.write('\n')
+        fp.write('# Set IP\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.1.20.0 value ' + ip_address + '\n')
+        fp.write('\n')
+        fp.write('#MGNT VLAN CONFIGURATION\n')
+        fp.write('vlan 1\n')
+        fp.write('ports gigabitethernet 0/1,0/2,0/6,0/9,0/10 untagged gigabitethernet 0/6,0/10\n')
+        fp.write('exit\n')
+        fp.write('vlan ' + mgmt_vlan + '\n')
+        fp.write('ports gigabitethernet 0/1,0/2,0/6,0/9,0/10 untagged gigabitethernet 0/9\n')
+        fp.write('exit\n')
+        fp.write('\n')
+        fp.write('#MNGT VLAN/IP ROUTING SETTINGS\n')
+        fp.write('#Change Management VLAN\n')
+        fp.write('default ip vlan id ' + mgmt_vlan + '\n')
+        fp.write('#Configure IP Address and Netmask\n')
+        fp.write('default ip address ' + ip_address + ' subnet-mask ' + subnet_mask + '\n')
+        fp.write('#Configure Default Gateway\n')
+        fp.write('default gateway route ' + default_gw + '\n')
+        fp.write('exit\n')
+        fp.write('\n')
+        fp.write('#Set the Port Alarm Report to Disable (Disable (1) or Enable (2))\n')
+        fp.write('configure terminal\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.73.2.1.7.1 value 1\n')
+        fp.write('exit\n')
+        fp.write('\n')
+        fp.write('#PORT ISOLATION\n')
+        fp.write('configure terminal\n')
+        fp.write('interface gigabitethernet 0/6\n')
+        fp.write('port-isolation add gigabitethernet 0/1\n')
+        fp.write('exit\n')
+        fp.write('interface gigabitethernet 0/10\n')
+        fp.write('port-isolation add gigabitethernet 0/1\n')
+        fp.write('exit\n')
+        fp.write('exit\n')
+        fp.write('\n')
+        fp.write('#Set XGLAN to no negotiation\n')
+        fp.write('configure terminal\n')
+        fp.write('Interface gigabitethernet 0/1\n')
+        fp.write('speed auto\n')
+        fp.write('no negotiation\n')
+        fp.write('no shutdown\n')
+        fp.write('end\n')
+        fp.write('\n')
+        fp.write('#######################\n')
+        fp.write('####GENERAL FEATUES####\n')
+        fp.write('#######################\n')
+        fp.write('#SYSTEM MTU\n')
+        fp.write('#Configure MTU size for all ports to 12266\n')
+        fp.write('configure terminal\n')
+        fp.write('system mtu 12266\n')
+        fp.write('exit\n')
+        fp.write('\n')
+        fp.write('############################################################################################################################\n')
+        fp.write('GROUPS CONFIG\n')
+        fp.write('############################################################################################################################\n')
+        fp.write('\n')
+        fp.write('configure terminal\n')
+        fp.write('\n')
+        fp.write('#The contents of accessControlGroupRowStatus can only be changed if this object is notInService (2)\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.9.4.82.111.111.116 value 2\n')
+        fp.write('\n')
+        fp.write('#Create entries for the three groups and setting it to createAndWait (5) - (NMS5UX, control, EWsnmp420 respectively)\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.9.6.78.77.83.53.85.88 value 5\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.9.7.99.111.110.116.114.111.108 value 5\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.9.9.69.87.115.110.109.112.52.50.48 value 5\n')
+        fp.write('\n')
+        fp.write('#Name of Group (NMS5UX, control, EWsnmp420 respectively)\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.1.6.78.77.83.53.85.88 value 4e:4d:53:35:55:58\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.1.7.99.111.110.116.114.111.108 value 63:6f:6e:74:72:6f:6c\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.1.9.69.87.115.110.109.112.52.50.48 value 45:57:73:6e:6d:70:34:32:30\n')
+        fp.write('\n')
+        fp.write('#Profile (Admin (1), Read/Write (2), Maintenance (3), Readyonly (4))\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.2.6.78.77.83.53.85.88 value 1\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.2.7.99.111.110.116.114.111.108 value 1\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.2.9.69.87.115.110.109.112.52.50.48 value 4\n')
+        fp.write('\n')
+        fp.write('#Allowed Protocols\n')
+        fp.write('#HTTP (Allow (2), Deny (1))\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.3.6.78.77.83.53.85.88 value 2\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.3.7.99.111.110.116.114.111.108 value 2\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.3.9.69.87.115.110.109.112.52.50.48 value 1\n')
+        fp.write('\n')
+        fp.write('#HTTPS (Allow (2), Deny (1))\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.4.6.78.77.83.53.85.88 value 2\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.4.7.99.111.110.116.114.111.108 value 2\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.4.9.69.87.115.110.109.112.52.50.48 value 1\n')
+        fp.write('\n')
+        fp.write('#SNMP (Deny (1), AllowV1 (2), AllowV2c (3), AllowV3 (4))\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.5.6.78.77.83.53.85.88 value 2\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.5.7.99.111.110.116.114.111.108 value 3\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.5.9.69.87.115.110.109.112.52.50.48 value 3\n')
+        fp.write('\n')
+        fp.write('#FTP (Deny (1), Allow (2))\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.6.6.78.77.83.53.85.88 value 2\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.6.7.99.111.110.116.114.111.108 value 2\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.6.9.69.87.115.110.109.112.52.50.48 value 1\n')
+        fp.write('\n')
+        fp.write('#Setting FTP Server IP Address\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.30.3.0 value 204.14.36.3\n')
+        fp.write('\n')
+        fp.write('#SFTP (Deny (1), Allow (2))\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.7.6.78.77.83.53.85.88 value 1\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.7.7.99.111.110.116.114.111.108 value 1\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.7.9.69.87.115.110.109.112.52.50.48 value 1\n')
+        fp.write('\n')
+        fp.write('#SSH (Deny (1), Allow (2))\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.8.6.78.77.83.53.85.88 value 2\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.8.7.99.111.110.116.114.111.108 value 2\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.8.9.69.87.115.110.109.112.52.50.48 value 1\n')
+        fp.write('\n')
+        fp.write('#Setting group entries back to active (1) - (NMS5UX, control, EWsnmp420 respectively)\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.9.6.78.77.83.53.85.88 value 1\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.9.7.99.111.110.116.114.111.108 value 1\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.9.9.69.87.115.110.109.112.52.50.48 value 1\n')
+        fp.write('\n')
+        fp.write('############################################################################################################################\n')
+        fp.write('\n')
+        fp.write('USERS CONFIG\n')
+        fp.write('\n')
+        fp.write('############################################################################################################################\n')
+        fp.write('\n')
+        fp.write('#Create entries for the three users and setting it to createAndWait (5) - (NMS5UX, control, EWsnmp420 respectively)\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.9.6.78.77.83.53.85.88 value 5\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.9.7.99.111.110.116.114.111.108 value 5\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.9.9.69.87.115.110.109.112.52.50.48 value 5\n')
+        fp.write('\n')
+        fp.write('#Name of Users (NMS5UX, control, EWsnmp420 respectively)\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.1.6.78.77.83.53.85.88 value 4e:4d:53:35:55:58\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.1.7.99.111.110.116.114.111.108 value 63:6f:6e:74:72:6f:6c\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.1.9.69.87.115.110.109.112.52.50.48 value 45:57:73:6e:6d:70:34:32:30\n')
+        fp.write('\n')
+        fp.write('#Connecting Users to Groups (NMS5UX, control, EWsnmp420 respectively)\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.2.6.78.77.83.53.85.88 value 4e:4d:53:35:55:58\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.2.7.99.111.110.116.114.111.108 value 63:6f:6e:74:72:6f:6c\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.2.9.69.87.115.110.109.112.52.50.48 value 45:57:73:6e:6d:70:34:32:30\n')
+        fp.write('\n')
+        fp.write('#Setting user passwords (SIAEMICR, PhrogBe17210, EWsnmp420 respectively)\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.3.6.78.77.83.53.85.88 value 53:49:41:45:4d:49:43:52\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.3.7.99.111.110.116.114.111.108 value 50:68:72:6f:67:42:65:31:37:32:31:30\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.3.9.69.87.115.110.109.112.52.50.48 value 45:57:73:6e:6d:70:34:32:30\n')
+        fp.write('\n')
+        fp.write('#Setting user authentication protocol (noAuth (1), md5 (2), sha (3))\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.4.6.78.77.83.53.85.88 value 1\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.4.7.99.111.110.116.114.111.108 value 1\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.4.9.69.87.115.110.109.112.52.50.48 value 1\n')
+        fp.write('\n')
+        fp.write('#Setting user authentication key if related group can use snmpv3 protocol\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.5.6.78.77.83.53.85.88 value 0\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.5.7.99.111.110.116.114.111.108 value 0\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.5.9.69.87.115.110.109.112.52.50.48 value 0\n')
+        fp.write('\n')
+        fp.write('#Setting user cipher protocol (noPriv (1), des (2), aes (3))\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.6.6.78.77.83.53.85.88 value 1\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.6.7.99.111.110.116.114.111.108 value 1\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.6.9.69.87.115.110.109.112.52.50.48 value 1\n')
+        fp.write('\n')
+        fp.write('#Setting user cipher key if related group can use snmpv3 protocol\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.7.6.78.77.83.53.85.88 value 0\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.7.7.99.111.110.116.114.111.108 value 0\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.7.9.69.87.115.110.109.112.52.50.48 value 0\n')
+        fp.write('\n')
+        fp.write('#Setting user timeout after login\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.8.6.78.77.83.53.85.88 value 3600\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.8.7.99.111.110.116.114.111.108 value 3600\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.8.9.69.87.115.110.109.112.52.50.48 value 300\n')
+        fp.write('\n')
+        fp.write('#Setting user entries back to active (1) - (NMS5UX, control, EWsnmp420 respectively)\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.9.6.78.77.83.53.85.88 value 1\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.9.7.99.111.110.116.114.111.108 value 1\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.9.9.69.87.115.110.109.112.52.50.48 value 1\n')
+        fp.write('\n')
+        fp.write('#Disable admin user credentials\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.9.5.97.100.109.105.110 value 2\n')
+        fp.write('\n')
+        fp.write('############################################################################################################################\n')
+        fp.write('#\n')
+        fp.write('#CLIENT SERVICE CONFIG\n')
+        fp.write('#\n')
+        fp.write('############################################################################################################################\n')
+        fp.write('\n')
+        fp.write('#Disabling sftp service\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.2.2 value 1\n')
+        fp.write('\n')
+        fp.write('#Setting username and password for ftip service (NMS5UX and SIAEMICR)\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.3.1 value 4e:4d:53:35:55:58\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.4.1 value 53:49:41:45:4d:49:43:52\n')
+        fp.write('\n')
+        fp.write('#Changing status back to active (1)\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.6.1 value 1\n')
+        fp.write('\n')
+        fp.write('#Setting up SNTP\n')
+        fp.write('sntp\n')
+        fp.write('set sntp client enabled\n')
+        fp.write('set sntp unicast-server ipv4 162.254.171.229 version 3\n')
+        fp.write('exit\n')
+        fp.write('clock time source ntp\n')
+        fp.write('\n')
+        fp.write('############################################################################################################################\n')
+        fp.write('\n')
+        fp.write('RADIO CONFIG\n')
+        fp.write('\n')
+        fp.write('############################################################################################################################\n')
+        fp.write('\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.15.4.1.2.1 value 5\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.15.4.1.2.1 value 1\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.15.4.1.5.1 value 131084\n')
+        fp.write('\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.39.2.1.73.1 value 5\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.39.2.1.2.1 value ' + freq + '\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.39.2.1.6.1 value -30\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.39.2.1.7.1 value -33\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.39.2.1.71.1 value 10000000\n')
+        fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.39.2.1.73.1 value 1\n')
+        fp.write('exit\n')
+        fp.write('sleep 20\n')
+        fp.write('reload\n')
+        fp.write('##########################################################################################################\n')
+        fp.write('# Wait roughly 4 mins, confirm you have GUI access, disconnect your serial connection and connect it again\n')
+        fp.write('##########################################################################################################\n')
+        fp.write('\n')
+
+
 def Alfo80HDX(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,freq):
 
     with open(file_path, 'w') as fp:
         fp.write('#################################\n')
-        fp.write('######ALFO+80HDX PORT INFO#######\n')
+        fp.write('######ALFO80HDX PORT INFO#######\n')
         fp.write('#################################\n')
         fp.write('#<XGLAN1>= extreme-ethernet 0/1\n')
         fp.write('#<LAN2>  = gigabitethernet 0/3\n')
         fp.write('#<LAN3>  = gigabitethernet 0/6\n')
         fp.write('#<LAN4>  = gigabitethernet 0/1\n')
-        fp.write('#<RADIO> = extreme-ethernet 0/2\n')
+        fp.write('#<TRX> = extreme-ethernet 0/2\n')
         fp.write('#<MNGT>  = gigabitethernet 0/7\n')
         fp.write('\n')
         fp.write('#################################\n')
@@ -27,9 +363,9 @@ def Alfo80HDX(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,fre
         fp.write('sleep 30\n')
         fp.write('reload\n')
         fp.write('\n')
-        fp.write('######################################################################################\n')
-        fp.write('# Confirm you have GUI access, disconnect your serial connection and connect it again\n')
-        fp.write('######################################################################################\n')
+        fp.write('##########################################################################################################\n')
+        fp.write('# Wait roughly 4 mins, confirm you have GUI access, disconnect your serial connection and connect it again\n')
+        fp.write('##########################################################################################################\n')
         fp.write('\n')
         fp.write('admin\n')
         fp.write('admin\n')
@@ -86,9 +422,9 @@ def Alfo80HDX(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,fre
         fp.write('set hitless-restart enable\n')
         fp.write('reload\n')
         fp.write('\n')
-        fp.write('######################################################################################\n')
-        fp.write('# Confirm you have GUI access, disconnect your serial connection and connect it again\n')
-        fp.write('######################################################################################\n')
+        fp.write('###########################################################################################################################\n')
+        fp.write('# Wait roughly 2 mins, confirm you have GUI access using the new IP, disconnect your serial connection and connect it again\n')
+        fp.write('###########################################################################################################################\n')
         fp.write('\n')
         fp.write('admin\n')
         fp.write('admin\n')
@@ -336,37 +672,10 @@ def Alfo80HDX(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,fre
         fp.write('\n')
         fp.write('#The contents of linkSettingsTable have been modified so setting this object back to active(1)\n')
         fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.80.6.1.5.1 value 1\n')
+        fp.write('###################################################################\n')
+        fp.write('# Wait roughly 2 mins, confirm you have GUI access using the new IP\n')
+        fp.write('###################################################################\n')
 
-
-def main():
-
-    file_name   = 'ptp-1841-211W-siae-2g'
-    ip_address  = '10.12.229.107'
-    default_gw  = '10.12.229.105'
-    subnet_mask = '255.255.255.248'
-    dirName     = 'Siae Configs'
-    freq        =  '82000000'
-    
-    #82000000, 82062500, 82125000, 82187500, 82250000, 82312500, 82375000, 82437500
-    #82500000, 82562500, 82625000, 82687500, 82750000, 82812500, 82875000, 82937500
-    #83000000, 83062500, 83125000, 83187500, 83250000, 83312500, 83375000, 83437500
-    #83500000, 83562500, 83625000, 83687500, 83750000, 83812500, 83875000, 83937500
-    #84000000, 84062500, 84125000, 84187500, 84250000, 84312500, 84375000, 84437500
-    #84500000, 84562500, 84625000, 84687500, 84750000, 84812500, 84875000, 84937500
-    #85000000
-
-    # Specify the directory path
-    dir_path = os.path.join(os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop'), dirName)
-    print(dir_path)
-
-    if not os.path.exists(dir_path):
-        os.makedirs(dir_path)
-
-    file_path = os.path.join(dir_path, file_name) + '.txt'
-
-    hex_name = ":".join("{:02x}".format(ord(c)) for c in file_name)
-    
-    Alfo80HDX(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,freq)
 
 if __name__ == '__main__':
     main()
