@@ -2,13 +2,13 @@ import os
 
 def main():
 
-    file_name   = 'ptp-1841-211W-siae-2g'
-    radio_type  = 'ALFO80HD'               #Options:ALFO80HDX,ALFO80HD,ALFOPLUS2
+    file_name   = 'ptp-1841-211W-siae-10g'
+    radio_type  = 'ALFO80HDX'               #Options:ALFO80HDX,ALFO80HD,ALFOPLUS2
     ip_address  = '10.12.229.107'
     default_gw  = '10.12.229.105'
     subnet_mask = '255.255.255.248'
     dirName     = 'Siae Configs'
-    freq        = '75750000'
+    freq        = '82000000'
     mgmt_vlan   = '50'                     #For ALFO80HD Radios
     
     #Freq Table for Siae Alfo80HDX radios with Duplex Freq of 10000 MHz - Low radios similar but in the 70's instead of 80's
@@ -279,7 +279,7 @@ def Alfo80HD(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,freq
         fp.write('#Disabling sftp service\n')
         fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.2.2 value 1\n')
         fp.write('\n')
-        fp.write('#Setting username and password for ftip service (NMS5UX and SIAEMICR)\n')
+        fp.write('#Setting username and password for ftp service (NMS5UX and SIAEMICR)\n')
         fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.3.1 value 4e:4d:53:35:55:58\n')
         fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.4.1 value 53:49:41:45:4d:49:43:52\n')
         fp.write('\n')
@@ -572,7 +572,7 @@ def Alfo80HDX(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,fre
         fp.write('#Disabling sftp service\n')
         fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.2.2 value 1\n')
         fp.write('\n')
-        fp.write('#Setting username and password for ftip service (NMS5UX and SIAEMICR)\n')
+        fp.write('#Setting username and password for ftp service (NMS5UX and SIAEMICR)\n')
         fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.3.1 value 4e:4d:53:35:55:58\n')
         fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.4.1 value 53:49:41:45:4d:49:43:52\n')
         fp.write('\n')
