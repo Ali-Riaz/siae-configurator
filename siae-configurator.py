@@ -378,7 +378,7 @@ def Alfo80HDX(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,fre
         fp.write('\n')
         fp.write('#MGNT VLAN CONFIGURATION\n')
         fp.write('vlan 1\n')
-        fp.write('ports gigabitethernet 0/7 extreme-ethernet 0/2 gigabitethernet 0/1,0/6 extreme-ethernet 0/1 untagged gigabitethernet 0/7,0/1,0/6 extreme-ethernet 0/1\n')
+        fp.write('ports gigabitethernet 0/7 extreme-ethernet 0/2 gigabitethernet 0/1,0/6 extreme-ethernet 0/1 untagged extreme-ethernet 0/2 gigabitethernet 0/7,0/1,0/6 extreme-ethernet 0/1\n')
         fp.write('exit\n')
         fp.write('\n')
         fp.write('#MNGT VLAN/IP ROUTING SETTINGS\n')
