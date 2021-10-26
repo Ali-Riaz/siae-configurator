@@ -48,6 +48,24 @@ def main():
 
 
 def AlfoPlus2(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,freq):
+    fp.write('############################################################################################################################\n')
+    fp.write('#MODULATION TABLE                                                                                                          #\n')
+    fp.write('# 1 = 4QAMstrong                                                                                                           #\n')
+    fp.write('# 2 = 4QAM                                                                                                                 #\n')
+    fp.write('# 3 = 16QAMstrong                                                                                                          #\n')
+    fp.write('# 4 = 16QAM                                                                                                                #\n')
+    fp.write('# 5 = 32QAM                                                                                                                #\n')
+    fp.write('# 6 = 64QAM                                                                                                                #\n')
+    fp.write('# 7 = 128QAM                                                                                                               #\n')
+    fp.write('# 8 = 256QAM                                                                                                               #\n')
+    fp.write('# 10 = 512QAM                                                                                                              #\n')
+    fp.write('# 12 = 1024QAM                                                                                                             #\n')
+    fp.write('# 13 = 2048QAM                                                                                                             #\n')
+    fp.write('# 14 = 4096QAM                                                                                                             #\n')
+    fp.write('#ACM Enabled (2 for Active, 1 for Inactive: 1.3.6.1.4.1.3373.1103.80.8.1.2.1                                               #\n')
+    fp.write('#ACM Lower Profile: 1.3.6.1.4.1.3373.1103.80.8.1.4.1                                                                       #\n')
+    fp.write('#ACM Upper Profile: 1.3.6.1.4.1.3373.1103.80.8.1.3.1                                                                       #\n')
+    fp.write('############################################################################################################################\n')
     pass
 
 
@@ -303,9 +321,9 @@ def Alfo80HD(file_name,file_path,hex_name,ip_address,default_gw,subnet_mask,freq
         fp.write('# 4QAM Strong - 5                                                                                                          #\n')
         fp.write('# 4QAM Strong - 8                                                                                                          #\n')
         fp.write('# 64QAM - 15                                                                                                               #\n')
-        fp.write('#ACM Enabled (2 for Active, 1 for Inactive: 1.3.6.1.4.1.3373.1103.15.4.1.9.1                                                #\n')
-        fp.write('#ACM Lower Profile: 1.3.6.1.4.1.3373.1103.15.4.1.7.1                                                                        #\n')
-        fp.write('#ACM Upper Profile: 1.3.6.1.4.1.3373.1103.15.4.1.6.1                                                                        #\n')
+        fp.write('#ACM Enabled (2 for Active, 1 for Inactive: 1.3.6.1.4.1.3373.1103.15.4.1.9.1                                               #\n')
+        fp.write('#ACM Lower Profile: 1.3.6.1.4.1.3373.1103.15.4.1.7.1                                                                       #\n')
+        fp.write('#ACM Upper Profile: 1.3.6.1.4.1.3373.1103.15.4.1.6.1                                                                       #\n')
         fp.write('############################################################################################################################\n')
         fp.write('\n')
         fp.write('snmpset mib oid 1.3.6.1.4.1.3373.1103.39.2.1.73.1 value 5\n')
