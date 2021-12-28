@@ -336,7 +336,7 @@ def AlfoPlus2(hex_name,radio_type,serialObj,ip_address,default_gw,subnet_mask,du
         # 65536 * 4QAM + 2000 MHz = 65536 * 2 + 11
         modulation = '4QAM'
         bandwidth = '2000MHz'
-        serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.80.8.1.1.1 value 131083\n')
+        serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.80.8.1.1.1 value 131089\n')
 
     serialString = b'snmpset mib oid 1.3.6.1.4.1.3373.1103.80.7.1.4.1.1 value 1\n'
     return_value = serialWrite(serialObj, serialString, b'=: ')
@@ -716,7 +716,7 @@ def AlfoPlus2(hex_name,radio_type,serialObj,ip_address,default_gw,subnet_mask,du
             serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.80.8.1.1.1 value 131088\n')
 
     elif radio_type == "ALFO80HDX":
-        serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.80.8.1.1.1 value 131083\n')
+        serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.80.8.1.1.1 value 131089\n')
 
     time.sleep(0.5)
 
