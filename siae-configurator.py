@@ -541,8 +541,8 @@ def AlfoPlus2(hex_name,radio_type,serialObj,ip_address,default_gw,subnet_mask,du
     #The contents of accessControlGroupRowStatus can only be changed if this object is notInService (2)
     serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.9.4.82.111.111.116 value 2\n')
 
-    #Create entries for the three groups and setting it to createAndWait (5) - (NMS5UX, control, EWsnmp420 respectively)
-    #Name of Group (NMS5UX, control, EWsnmp420 respectively)
+    #Create entries for the three groups and setting it to createAndWait (5)
+    #Name of Group
     #Profile (Admin (1), Read/Write (2), Maintenance (3), Readyonly (4))
     # Allowed Protocols
     # HTTP (Allow (2), Deny (1))
@@ -551,7 +551,7 @@ def AlfoPlus2(hex_name,radio_type,serialObj,ip_address,default_gw,subnet_mask,du
     # FTP (Deny (1), Allow (2))
     # SFTP (Deny (1), Allow (2))
     # SSH (Deny (1), Allow (2))
-    # Setting group entries back to active (1) - (NMS5UX, control, EWsnmp420 respectively)
+    # Setting group entries back to active (1)
 
     serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.9.6.78.77.83.53.85.88 value 5\n')
     time.sleep(0.3)
@@ -624,16 +624,16 @@ def AlfoPlus2(hex_name,radio_type,serialObj,ip_address,default_gw,subnet_mask,du
     #serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.9.4.114.111.111.116 value 2\n')
     #time.sleep(0.2)
 
-    #Create entries for the three users and setting it to createAndWait (5) - (NMS5UX, control, EWsnmp420 respectively)
-    #Name of Users (NMS5UX, control, EWsnmp420 respectively)
-    #Connecting Users to Groups (NMS5UX, control, EWsnmp420 respectively)
-    #Setting user passwords (SIAEMICR, PhrogBe17210, EWsnmp420 respectively)
+    #Create entries for the three users and setting it to createAndWait (5)
+    #Name of Users
+    #Connecting Users to Groups
+    #Setting user passwords
     #Setting user authentication protocol (noAuth (1), md5 (2), sha (3))
     #Setting user authentication key if related group can use snmpv3 protocol
     #Setting user cipher protocol (noPriv (1), des (2), aes (3))
     #Setting user cipher key if related group can use snmpv3 protocol
     #Setting user timeout after login
-    #Setting user entries back to active (1) - (NMS5UX, control, EWsnmp420 respectively)
+    #Setting user entries back to active (1)
 
     #serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.9.6.78.77.83.53.85.88 value 5\n')
     #serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.5.3.1.1.6.78.77.83.53.85.88 value 4e:4d:53:35:55:58\n')
@@ -679,7 +679,7 @@ def AlfoPlus2(hex_name,radio_type,serialObj,ip_address,default_gw,subnet_mask,du
     #Disabling sftp service
     serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.2.2 value 1\n')
 
-    #Setting username and password for ftp service (NMS5UX and SIAEMICR)
+    #Setting username and password for ftp service
     serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.3.1 value 4e:4d:53:35:55:58\n')
     time.sleep(0.1)
     serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.4.1 value 53:49:41:45:4d:49:43:52\n')
@@ -919,8 +919,8 @@ def Alfo80HD(hex_name,radio_type,serialObj,ip_address,default_gw,subnet_mask,dup
     # The contents of accessControlGroupRowStatus can only be changed if this object is notInService (2)
     serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.9.4.82.111.111.116 value 2\n')
 
-    # Create entries for the three groups and setting it to createAndWait (5) - (NMS5UX, control, EWsnmp420 respectively)
-    # Name of Group (NMS5UX, control, EWsnmp420 respectively)
+    # Create entries for the three groups and setting it to createAndWait (5)
+    # Name of Group
     # Profile (Admin (1), Read/Write (2), Maintenance (3), Readyonly (4))
     # Allowed Protocols
     # HTTP (Allow (2), Deny (1))
@@ -929,7 +929,7 @@ def Alfo80HD(hex_name,radio_type,serialObj,ip_address,default_gw,subnet_mask,dup
     # FTP (Deny (1), Allow (2))
     # SFTP (Deny (1), Allow (2))
     # SSH (Deny (1), Allow (2))
-    # Setting group entries back to active (1) - (NMS5UX, control, EWsnmp420 respectively)
+    # Setting group entries back to active (1)
 
     serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.5.2.1.9.6.78.77.83.53.85.88 value 5\n')
     time.sleep(0.3)
@@ -1000,7 +1000,7 @@ def Alfo80HD(hex_name,radio_type,serialObj,ip_address,default_gw,subnet_mask,dup
     # Disabling sftp service
     serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.2.2 value 1\n')
 
-    # Setting username and password for ftp service (NMS5UX and SIAEMICR)
+    # Setting username and password for ftp service
     serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.3.1 value 4e:4d:53:35:55:58\n')
     time.sleep(0.1)
     serialObj.write(b'snmpset mib oid 1.3.6.1.4.1.3373.1103.5.5.1.4.1 value 53:49:41:45:4d:49:43:52\n')
